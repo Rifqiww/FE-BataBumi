@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "102634741791",
+    "project_id": "bata-bumi",
+    "storage_bucket": "bata-bumi.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:102634741791:android:4634b0ab49340d782e352a",
+        "android_client_info": {
+          "package_name": "com.batabumi.app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCk2tPeEYtgwweQKHSsS9vdgAJNB5zbFaI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
