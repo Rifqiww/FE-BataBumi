@@ -8,31 +8,33 @@ on:
 
 jobs:
   build:
+    name: Build Android App
     runs-on: ubuntu-latest
+
     steps:
-      - name: Checkout repo
+      - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Set up JDK 11
+      - name: Set up JDK
         uses: actions/setup-java@v4
         with:
-          distribution: temurin
-          java-version: '11'
+          distribution: 'temurin'
+          java-version: '17'
 
-      - name: Setup Android SDK manually
-        run: |
-          mkdir -p $HOME/android-sdk
-          curl -o cmdline-tools.zip https://dl.google.com/android/repository/commandlinetools-linux-7583922_latest.zip
-          unzip cmdline-tools.zip -d $HOME/android-sdk
-          mv $HOME/android-sdk/cmdline-tools $HOME/android-sdk/tools
-        env:
-          JAVA_HOME: ${{ steps.setup-java.outputs.java-home }}
-          ANDROID_SDK_ROOT: $HOME/android-sdk
+      - name: Cache Gradle packages
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-
 
-      - name: Accept licenses
-        run: yes | $HOME/android-sdk/tools/bin/sdkmanager --licenses
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v3
 
-      - name: Build APK
+      - name: Build debug APK
         run: ./gradlew assembleDebug
 
       - name: Upload APK
@@ -40,3 +42,4 @@ jobs:
         with:
           name: app-debug
           path: app/build/outputs/apk/debug/app-debug.apk
+
