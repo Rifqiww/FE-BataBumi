@@ -33,6 +33,12 @@ jobs:
 
       - name: Setup Android SDK
         uses: android-actions/setup-android@v3
+        with:
+         api-level: 33
+         target: default
+         build-tools: 33.0.2
+         version: 12.0
+
 
       - name: Build debug APK
         run: ./gradlew assembleDebug
