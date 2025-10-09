@@ -13,12 +13,21 @@ import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
+import androidx.compose.runtime.Composable
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.navigation.compose.rememberNavController
+import com.batabumi.app.data.local.ChatDatabase
+import com.batabumi.app.data.repository.ChatRepository
+import com.batabumi.app.ui.navigation.AppNavigation
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import com.batabumi.app.ui.theme.BataBumiTheme
+import com.batabumi.app.config.ApiConfig
+import com.batabumi.app.viewmodel.ChatViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -79,6 +88,22 @@ class MainActivity : ComponentActivity() {
             splashScreen.setKeepOnScreenCondition { isLoading }
 
             BataBumiTheme {
+                Surface(
+                    modifier = Modifier.fillMaxSize(),
+                    color = MaterialTheme.colorScheme.background
+                ) {
+                    val navController = rememberNavController()
+                    val database = ChatDatabase.getDatabase(this)
+                    val repository = ChatRepository(database)
+                    val viewModel = ChatViewModel(repository)
+
+                    val apiKey = ApiConfig.GROQ_API_KEY
+
+                    AppNavigation(
+                        navController = navController,
+                        chatViewModel = viewModel,
+                        apiKey = apiKey
+                    )
                 // Define screens where bottom navigation should be visible
                 val showBottomBar = currentRoute in listOf(
                     "home", "orders", "consultation", "profile",
@@ -213,6 +238,7 @@ class MainActivity : ComponentActivity() {
                                     onNavigate = { newRoute: String -> navigateTo(newRoute) },
                                     onBack = { goBack() }
                                 )
+                                }
                             }
                         }
                     }
