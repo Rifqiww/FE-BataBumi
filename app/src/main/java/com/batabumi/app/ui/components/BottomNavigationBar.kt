@@ -32,7 +32,7 @@ fun BottomNavigationBar(
     val bottomNavItems = listOf(
         BottomNavItem("Home", Icons.Default.Home, "home"),
         BottomNavItem("Order", Icons.Default.List, "orders"),
-        BottomNavItem("Consultation", Icons.Default.Chat, "consultation"),
+        BottomNavItem("Consultation", Icons.Default.Chat, "consultation"), // 🔹 ganti dari "chat" ke "consultation"
         BottomNavItem("Profile", Icons.Default.Person, "profile")
     )
 

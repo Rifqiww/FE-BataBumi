@@ -1,6 +1,7 @@
 package com.batabumi.app.ui.navigation
 
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -11,7 +12,10 @@ import com.batabumi.app.viewmodel.ChatViewModel
 fun AppNavigation(
     navController: NavHostController,
     chatViewModel: ChatViewModel,
-    apiKey: String
+    apiKey: (String),
+    modifier: Modifier = Modifier,
+    onBack: () -> Unit,
+    onNavigate: (String) -> Unit,
 ) {
     NavHost(
         navController = navController,
@@ -20,7 +24,9 @@ fun AppNavigation(
         composable("chat") {
             ChatScreen(
                 viewModel = chatViewModel,
-                apiKey = apiKey
+                apiKey = apiKey,
+                onBack = onBack,
+                onNavigate = onNavigate
             )
         }
     }

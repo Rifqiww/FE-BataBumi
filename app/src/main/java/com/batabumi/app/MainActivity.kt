@@ -41,6 +41,7 @@ import com.batabumi.app.ui.screens.ConsultationScreen
 import com.batabumi.app.ui.screens.OrderScreen
 import com.batabumi.app.ui.screens.ProfileScreen
 import com.batabumi.app.ui.components.BottomNavigationBar
+import com.batabumi.app.ui.screens.ChatScreen
 import com.batabumi.app.ui.screens.payment.FormPaymentScreen
 
 class MainActivity : ComponentActivity() {
@@ -53,7 +54,7 @@ class MainActivity : ComponentActivity() {
             val scope = rememberCoroutineScope()
 
             // Navigation state
-            val screenStack = remember { mutableStateListOf("FormPaymentScreen") }
+            val screenStack = remember { mutableStateListOf("login") }
             val currentRoute = screenStack.last()
 
             val canGoBack = remember { derivedStateOf { screenStack.size > 1 } }
@@ -100,9 +101,11 @@ class MainActivity : ComponentActivity() {
                     val apiKey = ApiConfig.GROQ_API_KEY
 
                     AppNavigation(
-                        navController = navController,
                         chatViewModel = viewModel,
-                        apiKey = apiKey
+                        apiKey = apiKey,
+                        navController = navController,
+                        onBack = { goBack() },
+                        onNavigate = { route: String -> navigateTo(route) }
                     )
                 // Define screens where bottom navigation should be visible
                 val showBottomBar = currentRoute in listOf(
@@ -151,7 +154,8 @@ class MainActivity : ComponentActivity() {
                                             animationSpec = tween(300)
                                         ) + fadeOut(animationSpec = tween(300))
                             },
-                            label = "screen_transition"
+                            label = "screen_transition",
+                            modifier = Modifier.padding(innerPadding)
                         ) { route ->
                             when (route) {
                                 // 🔹 Auth Screens
@@ -190,10 +194,12 @@ class MainActivity : ComponentActivity() {
                                     onNavigate = { route: String -> navigateTo(route) }
                                 )
 
-                                "consultation" -> ConsultationScreen(
+                                "chat", "consultation" -> ChatScreen(
                                     modifier = Modifier.padding(innerPadding),
                                     onBack = { goBack() },
-                                    onNavigate = { route: String -> navigateTo(route) }
+                                    onNavigate = { route: String -> navigateTo(route) },
+                                    apiKey = apiKey,
+                                    viewModel = viewModel
                                 )
 
                                 "profile" -> ProfileScreen(

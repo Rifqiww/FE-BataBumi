@@ -34,6 +34,9 @@ import java.util.*
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ChatScreen(
+    modifier: Modifier = Modifier,
+    onBack: () -> Unit,
+    onNavigate: (String) -> Unit,
     viewModel: ChatViewModel,
     apiKey: String
 ) {
